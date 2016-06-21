@@ -1,0 +1,14 @@
+<script type="text/template" id="problem-sets-template"> 
+
+  <div id="header">
+    <h1>List of Problem Sets</h1>
+  </div>
+
+<!--  <div class="row">
+      <button class="btn btn-default" id="delete-modules-button">Delete Selected Modules</button>
+      <button class="btn btn-default" data-toggle="modal" data-target="#add-module-modal">Add New Module</button>
+  </div> -->
+
+<div id="table-container"></div>  
+  
+</script>

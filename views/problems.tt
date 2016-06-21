@@ -1,0 +1,39 @@
+<script type="text/template" id="list-problems-template"> 
+
+  <div id="header">
+    <h1>List Problems</h1>
+    <div class="inline-form">
+    <span class="col-sm-3"><select class="form-control" id="target-problem-set"></select></span>
+    <div class="form-group">
+    <button id="new-problem-set-button" data-saving-text="Saving New Set..." class="btn btn-primary">Create New Problem Set</button>
+      <div class="col-sm-3">
+        <input id="new-set-name" class="form-control" placeholder="New Set Name">
+      </div>
+    </div>
+    </div>
+    <div class="inline-form">
+          <button class="latex-all btn btn-primary">LaTeX All Problems</button>
+    <a href="/output/test.pdf" target="_blank">result</a>
+    
+
+    </div>
+  </div>
+  <div id="problems-container" class="row">
+  <ul class="problem-list col-sm-8 col-sm-offset-2"></ul>
+  </div>
+
+</script>
+
+<script type="text/template" id="problem-template">
+   <div class="problem-container">
+     <div class="btn-group btn-group-sm" role="group">
+       <a class="edit-button btn btn-default" href="/problem/<%=_id%>">Edit</a>
+       <a class="add-button btn btn-default">Add to Set</a>
+       <a class="delete-button btn btn-default">Delete Problem</a>
+       <a class="latex-button btn btn-default">LaTeX me!</a>
+     </div>
+     <div class="problem-viewer">
+     
+     </div>
+   </div>
+</script>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="[% settings.charset %]">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    
+  <title>problemdb</title>
+  
+  <link rel="stylesheet" type="text/css" href="[% request.uri_base %]/css/style.css">
+  <link rel="stylesheet" type="text/css" href="[% request.uri_base %]/javascripts/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="[% request.uri_base %]/javascripts/bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css"  href="[% request.uri_base %]/javascripts/bower_components/bootstrap-markdown/css/bootstrap-markdown.min.css">
+<!-- Grab jQuery from a CDN, fall back to local if necessary -->
+<!--<script src="//code.jquery.com/jquery-2.1.4.min.js"></script> -->
+    <script type="text/javascript" async
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+
+    <script type="text/javascript" src="[% request.uri_base %]/javascripts/apps/require-config.js"></script>
+  
+
+<script type="text/javascript" data-main="[% request.uri_base %]/javascripts/apps/[% appname %]" src="/javascripts/bower_components/requirejs/require.js"></script>
+
+<script type="text/javascript">
+requirejs.config({
+    config: {
+        '[% appname %]': {
+            [% IF authors %]
+              authors: [% authors %],
+            [% END %]
+            [% IF modules %]
+              modules: [% modules %],
+            [% END %]
+            [% IF problems %]
+              problems: [% problems %],
+            [% END %]
+            [% IF problem_sets %]
+              problem_sets: [% problem_sets %]
+            [% END %]
+            [% IF id %]
+               problem_id: "[% id %]",
+            [% END %]
+        }
+    }
+});
+</script>
+    
+</head>
+<body>
+  <div id="page">
+    [% INSERT sidebar.tt %]
+    <div id="content"> </div>
+  </div>
+  <div id="footer">
+    Powered by <a href="http://perldancer.org/">Dancer2</a> [% dancer_version %]
+  </div>
+[% content %]
+</body>
+</html>
