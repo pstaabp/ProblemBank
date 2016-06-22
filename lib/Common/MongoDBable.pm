@@ -13,7 +13,6 @@ around BUILDARGS => sub {
   my $class = shift;
   my %args = @_ == 1 ? %{ $_[0] } : @_;
   
-  print ref($args{_id}) . "\n";
   if (ref($args{_id}) eq "MongoDB::OID") {
     $args{_id} = $args{_id}->{value}; 
   } 
@@ -28,6 +27,18 @@ sub insert_to_db_common {
   return $self
 }
 
+sub update_in_db {
+  my ($self,$client,$collection_name) = @_;
+  my $collection = $client->ns($collection_name);
+  dd $self;
+  my $id_obj = MongoDB::OID->new(value =>$self->_id);
+  my $params = $self->to_hash;
+  delete $params->{_id};
+  my $db_resp = $collection->find_one_and_replace({_id => $id_obj},$params);
+
+  return $db_resp; 
+}
+
 sub remove_from_db_common {
   my ($self,$client,$collection_name) = @_;
   my $collection = $client->ns($collection_name);
@@ -39,7 +50,11 @@ sub remove_from_db_common {
 
 sub to_hash {
    my $self= shift; 
-   my $hash = unbless($self);
+   
+   my $hash = {};
+   for my $key (keys %$self){
+       $hash->{$key} = $self->{$key}
+   }
    return $hash;
 }
 

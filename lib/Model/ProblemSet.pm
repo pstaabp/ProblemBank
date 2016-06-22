@@ -11,8 +11,8 @@ use Scalar::Util qw(looks_like_number);
 
 with 'Common::MongoDBable';
 
-has name => (is => 'ro', isa => Str);
-has problems => (is => 'ro', isa => ArrayRef[Str], default => sub { return []; });
+has name => (is => 'rw', isa => Str);
+has problems => (is => 'rw', isa => ArrayRef[Str], default => sub { return []; });
 
 sub insert_to_db {
   my ($self,$client) = @_;

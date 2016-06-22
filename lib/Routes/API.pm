@@ -9,7 +9,7 @@ use Model::Problem;
 use Model::ProblemSet;
 use Model::ModuleList qw/module_collection/; 
 use Model::ProblemList qw/problem_collection get_problem_by_id update_problem_by_id/; 
-use Common::Collection qw/to_hashes get_one_by_id/;
+use Common::Collection qw/to_hashes get_one_by_id get_all_in_collection/;
 use Data::Dump qw/dump/;
 
 
@@ -58,7 +58,7 @@ get '/problems' => sub { # get an array of all modules
 get '/problems/:problem_id' => sub {  
    debug 'in /problems/:problem_id'; 
    my $client = MongoDB->connect('mongodb://localhost');
-   my $prob = get_problem_by_id($client,route_parameters->{problem_id}); 
+   my $prob = get_one_by_id($client,'problemdb.problems','Model::Problem',route_parameters->{problem_id}); 
    return $prob->to_hash; 
 }; 
 
@@ -126,9 +126,10 @@ post '/problems/latex' => sub {
 ### problem set routes
 
 get '/problemsets' => sub {
+  my $client = MongoDB->connect('mongodb://localhost');
+  my $sets = get_all_in_collection($client,'problemdb.problemsets','Model::ProblemSet');
   
-
-
+  return to_hashes($sets);
 };
 
 
@@ -140,7 +141,7 @@ post '/problemsets' => sub {
 };
 
 get '/problemsets/:problem_id' => sub {
-  debug "in GET /problems/:problem_id";
+  debug "in GET /problemsets/:problem_id";
   my $client = MongoDB->connect('mongodb://localhost');
   my $set = get_one_by_id($client,"problemdb.problemsets","Model::ProblemSet",route_parameters->{problem_id}); 
   
@@ -152,12 +153,13 @@ put '/problemsets/:problem_id' => sub {
   debug "in PUT /problems/:problem_id";
   my $client = MongoDB->connect('mongodb://localhost');
   my $set = get_one_by_id($client,"problemdb.problemsets","Model::ProblemSet",route_parameters->{problem_id}); 
-  debug body_parameters->as_hashref;
+  my @problems =  body_parameters->get_all("problems");
   my $name = body_parameters->{name};
   $set->name($name);
-  debug "here";
-  $set->problems(body_parameters->{problems}); 
-
+  $set->problems(\@problems); 
+  $set->update_in_db($client,"problemdb.problemsets"); 
+  
+  debug dump $set; 
   return $set->to_hash; 
 };
 

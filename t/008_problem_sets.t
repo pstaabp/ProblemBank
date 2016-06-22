@@ -9,26 +9,59 @@ use Plack::Test;
 use JSON;
 use HTTP::Request::Common;
 use Model::Problem; 
+use Types::Standard qw/ArrayRef Str Num/;
+
 
 use Data::Dump qw/dd/;
 
 ## test that the /problems route exists
 my $test_api = Plack::Test->create(Routes::API->to_app);
-my $res  = $test_api->request( GET '/problemsets' );
-ok( $res->is_success, '[GET /problemsets] successful' );
+
+### get all of the problems
+
+my $res = $test_api->request(GET '/problems');
+ok($res->is_success, '[GET /problems] successful');
+
+my $problems = decode_json $res->content; 
+
+## get all of the problem sets 
+
+$res = $test_api->request(GET '/problemsets');
+ok($res->is_success, '[GET /problemsets] successful');
+
+my $sets = decode_json $res->content;
 
 
-my $id = "576987cd541e655d9f6b9a01";
+## get the first set in the database
+
+my $id = $sets->[0]->{_id};
 
 my $route = "/problemsets/$id"; 
 $res = $test_api->request(GET $route);
-ok($res->is_success, '[GET $route] successful'); 
+ok($res->is_success, "[GET $route] successful"); 
 
 my $params = decode_json $res->content; 
-dd $params; 
+#dd $params; 
 my $set = Model::ProblemSet->new($params); 
 
-dd $set; 
+my @probs = @{$set->problems}; 
+push(@probs,$problems->[0]->{_id});
+push(@probs,$problems->[1]->{_id});
+
+$set->problems(\@probs); 
+
+## put/update the problemset
+my $h = $set->to_hash;
+
+dd encode_json($h);
+
+$res = $test_api->request(PUT $route,'Content-Type' => 'application/json', 
+            Content => encode_json($h)); 
+
+
+dd $res->content;
+
+
 
 ## create a new problem set 
 

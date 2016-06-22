@@ -106,7 +106,6 @@ sub insert_to_db {
 }
 
 sub to_hash {
-    print "in to_hash\n";
     my $self= shift; 
     my $hash = {}; 
     for my $field (@non_date_fields) {
