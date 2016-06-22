@@ -1,11 +1,11 @@
 // This is the main code for the AddProblem page based on a Backbone.View
 
-define(["module","backbone","jquery","models/AuthorList","markdown",
-        "models/ProblemList","models/ModuleList", "views/ProblemView",
-        "models/ProblemSet","models/ProblemSetList",
+define(["module","backbone","jquery","models/AuthorList",
+        "models/ProblemList","models/ModuleList",
+        "models/ProblemSet","models/ProblemSetList","views/ProblemView",
         "bootstrap-markdown","stickit"], 
-       function(module,Backbone,$,AuthorList,markdown,ProblemList,ModuleList,ProblemView,ProblemSet,ProblemSetList) {
-  var ListProblemsView = Backbone.View.extend({
+       function(module,Backbone,$,AuthorList,ProblemList,ModuleList,ProblemSet,ProblemSetList,ProblemView) {
+  var ProblemSetView = Backbone.View.extend({
     el: "#content",
     initialize: function() {
       var self = this; 
@@ -13,10 +13,7 @@ define(["module","backbone","jquery","models/AuthorList","markdown",
       this.problemList = new ProblemList(module.config().problems);
       this.moduleList = new ModuleList(module.config().modules);
       this.problemSets = new ProblemSetList(module.config().problem_sets,{parse: true}); 
-      this.model = new Backbone.Model({set_id: null, new_set_name: "", problem_set: null});
-      this.model.on("change:set_id",function() {
-        self.model.set("problem_set",self.problemSets.findWhere({_id: self.model.get("set_id")}));   
-      });
+      this.model = this.problemSets.findWhere({_id: module.config().set_id});                                           
       this.render();
     },
     render: function (){
@@ -25,8 +22,8 @@ define(["module","backbone","jquery","models/AuthorList","markdown",
       
       this.$("#problems-container ul").html();
       
-      this.problemList.each(function(prob){
-        self.$("#problems-container ul.problem-list").append(new ProblemView({model: prob, parent: self}).render().el); 
+      this.model.get("problems").each(function(prob){
+        self.$("#problems-container ul.problem-list").append(new ProblemView({model: prob}).render().el); 
       }); 
       MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
       this.stickit();
@@ -42,11 +39,9 @@ define(["module","backbone","jquery","models/AuthorList","markdown",
     
     }, 
     bindings: { 
-      "#target-problem-set": { observe: "set_id", 
+      "#target-problem-set": { observe: "problem_set", 
                         selectOptions: { collection: function () { 
-                          return this.problemSets.map(function(_set) { 
-                            return {label: _set.get("name"), value: _set.get("_id")}});
-                          }, 
+                          return this.problemSets.pluck("name"); }, 
                                 defaultOption: {value: null, label: "Select Target Set..."}
                                               }},
       "#new-set-name": "new_set_name"
@@ -64,8 +59,7 @@ define(["module","backbone","jquery","models/AuthorList","markdown",
         
       }}); 
     }
-  });
-    
-   var listProblemsView = new ListProblemsView(); 
+  });  
+   var psv = new ProblemSetView(); 
 
 });

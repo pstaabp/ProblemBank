@@ -9,7 +9,7 @@ use Model::Problem;
 use Model::ProblemSet;
 use Model::ModuleList qw/module_collection/; 
 use Model::ProblemList qw/problem_collection get_problem_by_id update_problem_by_id/; 
-use Common::Collection qw/to_hashes/;
+use Common::Collection qw/to_hashes get_one_by_id/;
 use Data::Dump qw/dump/;
 
 
@@ -137,8 +137,39 @@ post '/problemsets' => sub {
   $newProblemSet->insert_to_db(MongoDB->connect('mongodb://localhost'));
   
   return $newProblemSet->to_hash;
-
 };
+
+get '/problemsets/:problem_id' => sub {
+  debug "in GET /problems/:problem_id";
+  my $client = MongoDB->connect('mongodb://localhost');
+  my $set = get_one_by_id($client,"problemdb.problemsets","Model::ProblemSet",route_parameters->{problem_id}); 
+  
+  return $set->to_hash; 
+};
+
+
+put '/problemsets/:problem_id' => sub {
+  debug "in PUT /problems/:problem_id";
+  my $client = MongoDB->connect('mongodb://localhost');
+  my $set = get_one_by_id($client,"problemdb.problemsets","Model::ProblemSet",route_parameters->{problem_id}); 
+  debug body_parameters->as_hashref;
+  my $name = body_parameters->{name};
+  $set->name($name);
+  debug "here";
+  $set->problems(body_parameters->{problems}); 
+
+  return $set->to_hash; 
+};
+
+del '/problemsets/:problem_id' => sub {  
+   debug "in DEL /problemsets/:problem_id"; 
+   my $client = MongoDB->connect('mongodb://localhost');
+   my $set = get_one_by_id($client,"problemdb.problemsets","Model::ProblemSet",route_parameters->{problem_id}); 
+   debug dump $set; 
+   #my $set = Model::ProblemSet->new(route_parameters->as_hashref); 
+   return $set->remove_from_db($client); 
+}; 
+
 
 
 ### module routes

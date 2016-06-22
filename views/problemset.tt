@@ -1,7 +1,11 @@
 <script type="text/template" id="list-problems-template"> 
 
   <div id="header">
-    <h1>List Problems</h1>
+    <h1>Problem Set Editor</h1>
+    <div class="inline-form">
+        <button class="latex-all btn btn-primary">LaTeX All Problems</button>
+        <a href="/output/test.pdf" target="_blank">result</a>
+    </div>
   </div>
   <div id="problems-container" class="row">
   <ul class="problem-list col-sm-8 col-sm-offset-2"></ul>

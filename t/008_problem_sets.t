@@ -3,17 +3,68 @@ use warnings;
 
 use lib '../lib';
 
-use MongoDB; 
-use Model::ProblemSet;
-use Data::Dump qw/dd dump/;
+use Routes::API;
+use Test::More tests => 2;
+use Plack::Test;
+use JSON;
+use HTTP::Request::Common;
+use Model::Problem; 
+
+use Data::Dump qw/dd/;
+
+## test that the /problems route exists
+my $test_api = Plack::Test->create(Routes::API->to_app);
+my $res  = $test_api->request( GET '/problemsets' );
+ok( $res->is_success, '[GET /problemsets] successful' );
 
 
-#my $client = MongoDB->connect('mongodb://localhost');
-#my $mc = $client->ns('problemdb.problems');
-#my $id = "575f0e5b541e651d7227cb01"; 
-#my $p = $mc->find_id(MongoDB::OID->new(value=>$id));
+my $id = "576987cd541e655d9f6b9a01";
 
-my $set = Model::ProblemSet->new({ name => "howdy"}); 
-#my $res = Model::ProblemList::remove_problem_by_id($client,$id); 
+my $route = "/problemsets/$id"; 
+$res = $test_api->request(GET $route);
+ok($res->is_success, '[GET $route] successful'); 
 
-dump $set;
+my $params = decode_json $res->content; 
+dd $params; 
+my $set = Model::ProblemSet->new($params); 
+
+dd $set; 
+
+## create a new problem set 
+
+#my $params = {name => "new_set", problems => []}; 
+#$res = $test_api->request(POST '/problemsets','Content-Type' => 'application/json', Content => 
+#  encode_json($params)); 
+#ok($res->is_success, '[POST /problemsets] successful' ); 
+#
+#my $problem = decode_json $res->content; 
+#my $id = $problem->{_id}; 
+
+## check the put command
+
+#$params->{name} = "updated name"; 
+
+#
+#$res = $test_api->request(PUT $route); 
+#ok($res->is_success, "[PUT $route successful"); 
+#
+#dd $res; 
+
+
+## delete the set
+
+#$res = $test_api->request(HTTP::Request::Common::DELETE $route); 
+#
+#dd $res; 
+#
+#ok($res->is_success, "[DELETE $route successful"); 
+
+
+
+
+
+
+## delete the set
+
+
+

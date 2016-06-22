@@ -2,10 +2,11 @@ package Common::Collection;
 
 use base qw(Exporter);
 
-#use Data::Dump qw/dd/;
+use MongoDB::OID;
+use Data::Dump qw/dd dump/;
 
 our @EXPORT    = ();
-our @EXPORT_OK = qw(to_hashes insert_to_db get_all_in_collection);
+our @EXPORT_OK = qw(to_hashes insert_to_db get_all_in_collection get_one_by_id);
 
 ###
 #  input: array reference of Model::Modules
@@ -45,5 +46,21 @@ sub get_all_in_collection {
   my @items = map {$class->new($_);} $mc->find->all;
   return \@items;
 }
+
+###
+#
+#  this finds an object of type class from the collection
+#
+###
+
+sub get_one_by_id {
+  my ($client,$collection_name,$class,$id) = @_;
+  my $collection = $client->ns($collection_name); 
+  my $id_obj = MongoDB::OID->new(value => $id);
+  my $result = $collection->find_id($id_obj);
+  return $class->new($result); 
+}
+
+
 
 1; 

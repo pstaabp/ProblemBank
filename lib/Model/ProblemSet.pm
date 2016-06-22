@@ -19,4 +19,11 @@ sub insert_to_db {
   return $self->insert_to_db_common($client,'problemdb.problemsets'); 
 }
 
+sub remove_from_db {
+  my ($self,$client) = @_;
+  print "in remove_from_db\n";
+  return $self->remove_from_db_common($client,'problemdb.problemsets'); 
+
+}
+
 1;

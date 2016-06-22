@@ -35,11 +35,15 @@ requirejs.config({
               problems: [% problems %],
             [% END %]
             [% IF problem_sets %]
-              problem_sets: [% problem_sets %]
+              problem_sets: [% problem_sets %],
             [% END %]
             [% IF id %]
                problem_id: "[% id %]",
             [% END %]
+            [% IF set_id %]
+               set_id: "[% set_id %]",
+            [% END %]
+
         }
     }
 });

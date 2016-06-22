@@ -1,0 +1,1 @@
+../../../BackboneCollectionTable/CollectionTableView.js

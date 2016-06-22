@@ -24,15 +24,29 @@ get '/problemsets' => sub {
     template 'problemsets', $params;
 };
 
-get qr{/problem/?([\w]*)} => sub {
-    my @name = splat;
-    
+get '/problem' => sub {
     my $params = getAllData(); 
     $params->{appname} = "AddProblemView"; 
-    $params->{header} = @name ? "Problem Editor": "Add New Problem";
-    $params->{id} = $name[0] if @name; 
+    $params->{header} = "Add New Problem"; 
+    template 'problem', $params; 
+
+}; 
+
+get '/problem/:problem_id' => sub {
+    my $params = getAllData(); 
+    $params->{appname} = "AddProblemView"; 
+    $params->{header} = "Problem Editor";
+    $params->{id} = route_parameters->{problem_id}; 
     template 'problem', $params;
 };
+
+get '/problemsets/:set_id' => sub {
+  my $params = getAllData(); 
+  $params->{appname} = "ProblemSetView";
+  $params->{header} = "Problem Set Editor"; 
+  $params->{set_id} = route_parameters->{set_id};
+  template 'problemset', $params; 
+}; 
 
 
 get '/modules' => sub {
