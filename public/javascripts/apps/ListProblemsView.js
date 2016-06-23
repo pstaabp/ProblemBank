@@ -12,7 +12,7 @@ define(["module","backbone","jquery","models/AuthorList","markdown",
       this.authorList = new AuthorList(module.config().authors);
       this.problemList = new ProblemList(module.config().problems);
       this.moduleList = new ModuleList(module.config().modules);
-      this.problemSets = new ProblemSetList(module.config().problem_sets,{parse: true}); 
+      this.problemSets = new ProblemSetList(module.config().problem_sets,{parse: true,all_problems:this.problemList}); // make sure that all_problems is passed in. 
       this.model = new Backbone.Model({set_id: null, new_set_name: "", problem_set: null});
       this.model.on("change:set_id",function() {
         self.model.set("problem_set",self.problemSets.findWhere({_id: self.model.get("set_id")}));   

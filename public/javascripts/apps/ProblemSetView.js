@@ -12,8 +12,8 @@ define(["module","backbone","jquery","models/AuthorList",
       this.authorList = new AuthorList(module.config().authors);
       this.problemList = new ProblemList(module.config().problems);
       this.moduleList = new ModuleList(module.config().modules);
-      this.problemSets = new ProblemSetList(module.config().problem_sets,{parse: true}); 
-      this.model = this.problemSets.findWhere({_id: module.config().set_id});                                           
+      this.problemSets = new ProblemSetList(module.config().problem_sets,{parse: true,all_problems:this.problemList}); // make sure that all_problems is passed in. 
+      this.model = this.problemSets.findWhere({_id: module.config().set_id});
       this.render();
     },
     render: function (){
@@ -35,7 +35,7 @@ define(["module","backbone","jquery","models/AuthorList",
       "click #new-problem-set-button": "createNewProblemSet"
     },
     latexProblems: function() {
-      $.ajax("/api/problems/latex",{type: "POST",success: function(data)     {console.log("yeah!");console.log(data);}});
+      $.ajax("/api/problemsets/" + this.model.get("_id") + "/latex",{type: "POST",success: function(data)     {console.log("yeah!");console.log(data);}});
     
     }, 
     bindings: { 

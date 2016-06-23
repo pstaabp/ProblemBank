@@ -5,16 +5,10 @@ define(["backbone","jquery","markdown"], function(Backbone,$,markdown) {
     template: _.template($("#problem-template").html()),
     initialize: function(options) {
       _(this).extend(_(options).pick("parent"));
-      //this.problem_set = this.parent.model.get("; 
-//      this.listenTo(this.parent.model,"change:problem_set", function() {
-//        this.selected_set_id = this.parent.model
-//        console.log(this.parent.model); 
-//        
-//      }); 
     },
     render: function() {
       var md = markdown();
-      this.$el.html(this.template(this.model.attributes));
+      this.$el.html(this.template({_id: this.model.get("_id")}));
       this.$(".problem-viewer").html(md.render(this.model.get("text_md")));
       
       return this;

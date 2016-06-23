@@ -9,8 +9,12 @@ define(["backbone","models/ProblemList"], function(Backbone,ProblemList) {
       $.ajax("/api/problemsets/" + this.get("_id") + "/latex",{type: "POST",success: function(data)     {console.log("yeah!");console.log(data);}});
     },
     parse: function(data){
-      this.set("problems", new ProblemList(data.problems)); 
-      delete data.problems; 
+      var self = this; 
+      var problems = new ProblemList(); // this is the ProblemList that stores the problems.  
+      _(data.problems).each(function(_probid){
+          problems.add(self.collection.all_problems.findWhere({_id: _probid})); 
+      });
+      data.problems = problems; 
       return data; 
     },
     toJSON: function() {

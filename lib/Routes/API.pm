@@ -140,19 +140,19 @@ post '/problemsets' => sub {
   return $newProblemSet->to_hash;
 };
 
-get '/problemsets/:problem_id' => sub {
-  debug "in GET /problemsets/:problem_id";
+get '/problemsets/:set_id' => sub {
+  debug "in GET /problemsets/:set_id";
   my $client = MongoDB->connect('mongodb://localhost');
-  my $set = get_one_by_id($client,"problemdb.problemsets","Model::ProblemSet",route_parameters->{problem_id}); 
+  my $set = get_one_by_id($client,"problemdb.problemsets","Model::ProblemSet",route_parameters->{set_id}); 
   
   return $set->to_hash; 
 };
 
 
-put '/problemsets/:problem_id' => sub {
-  debug "in PUT /problems/:problem_id";
+put '/problemsets/:set_id' => sub {
+  debug "in PUT /problems/:set_id";
   my $client = MongoDB->connect('mongodb://localhost');
-  my $set = get_one_by_id($client,"problemdb.problemsets","Model::ProblemSet",route_parameters->{problem_id}); 
+  my $set = get_one_by_id($client,"problemdb.problemsets","Model::ProblemSet",route_parameters->{set_id}); 
   my @problems =  body_parameters->get_all("problems");
   my $name = body_parameters->{name};
   $set->name($name);
@@ -163,15 +163,27 @@ put '/problemsets/:problem_id' => sub {
   return $set->to_hash; 
 };
 
-del '/problemsets/:problem_id' => sub {  
-   debug "in DEL /problemsets/:problem_id"; 
+del '/problemsets/:set_id' => sub {  
+   debug "in DEL /problemsets/:set_id"; 
    my $client = MongoDB->connect('mongodb://localhost');
-   my $set = get_one_by_id($client,"problemdb.problemsets","Model::ProblemSet",route_parameters->{problem_id}); 
+   my $set = get_one_by_id($client,"problemdb.problemsets","Model::ProblemSet",route_parameters->{set_id}); 
    debug dump $set; 
    #my $set = Model::ProblemSet->new(route_parameters->as_hashref); 
    return $set->remove_from_db($client); 
 }; 
 
+
+### latex a give problem set
+
+post '/problemsets/:set_id/latex' => sub {
+  debug 'in POST /problemsets/:set_id/latex';
+  debug config->{appname};
+  my $client = MongoDB->connect('mongodb://localhost');
+  my $set = get_one_by_id($client,"problemdb.problemsets","Model::ProblemSet",route_parameters->{set_id}); 
+  $set->latex($client,config); 
+   
+
+};
 
 
 ### module routes
