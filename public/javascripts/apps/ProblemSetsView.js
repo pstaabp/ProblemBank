@@ -18,7 +18,7 @@ function(module,Backbone,$,ProblemSet,ProblemSetList,
       this.setupTable(); 
       this.problemSetsTable = new CollectionTableView({collection: this.problemSets,
                                                        columnInfo: this.tableCols,
-                                                       row_id_field: "_id",
+                                                       row_id_field: "_id", paginator: {showPaginator: true},
                                                        table_classes: "table"}); 
       this.render();
     },

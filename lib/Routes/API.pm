@@ -179,6 +179,7 @@ post '/problemsets/:set_id/latex' => sub {
   debug 'in POST /problemsets/:set_id/latex';
   debug config->{appname};
   my $client = MongoDB->connect('mongodb://localhost');
+  debug $client;
   my $set = get_one_by_id($client,"problemdb.problemsets","Model::ProblemSet",route_parameters->{set_id}); 
   $set->latex($client,config); 
    

@@ -7,7 +7,8 @@ define(["backbone"], function(Backbone) {
       "text_latex"     :  "",
       "solution_md" :  "",
       "solution_latex" :  "",
-      "description": ""
+      "description": "",
+      "type": []
     },
     idAttribute: "_id",
     latex: function(){

@@ -7,7 +7,7 @@
     <h1>[% header %]</h1>
   </div>
 
-  <div class="form-inline">
+  <div class="form-horiztonal">
     <div class="form-group col-sm-12">
       <label for="author" class="col-sm-2 control-label">Author</label>
       <div class="col-sm-4">
@@ -15,14 +15,26 @@
       </div>
       <button class="btn btn-default" data-toggle="modal" data-target="#add-author-modal">Add New Author</button>
     </div>
+    <div class="form-group col-sm-12">
+      <label for="prob-type" class="col-sm-2 control-label">Type of Problem</label>
+      <div class="checkbox">
+    <label>
+      <input id="group-work-cb" class="problem-type" type="checkbox" value="gw"> Group Work
+    </label>
+    <label>
+      <input id="written-work-cb" class="problem-type"  type="checkbox" value="wr"> Written Work
+    </label>
+    <label>
+      <input id="quiz-exam-cb" class="problem-type"  type="checkbox", value="qu"> Quiz/Exam
+    </label>
   </div>
-  <div class="form-inline">
+    </div>
     <div class="form-group col-sm-12">
       <label for="modules" class="col-sm-2 control-label">Module</label>
       <div class="col-sm-4">
         <select class="form-control" id="modules"></select>
       </div>
-      <button id="add-problem-button" class="btn btn-default">Add to the Database</button>
+      <button id="add-problem-button" class="btn btn-primary">Add to the Database</button>
     </div>
   </div>
 

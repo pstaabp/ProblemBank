@@ -4,16 +4,17 @@ use warnings;
 use lib '../lib';
 
 use Routes::API;
-use Dancer2;
+
 use Test::More tests => 2;
 use Plack::Test;
 #use JSON;
 use HTTP::Request::Common;
 use Model::Problem; 
 use Types::Standard qw/ArrayRef Str Num/;
+use MongoDB;
+use Dancer2;
 
-
-use Data::Dump qw/dd/;
+use Data::Dump qw/dd dump/;
 ## test that the /problems route exists
 my $test_api = Plack::Test->create(Routes::API->to_app);
 
@@ -44,7 +45,8 @@ my $params = from_json $res->content;
 #dd $params; 
 my $set = Model::ProblemSet->new($params); 
 
-$set->latex;
+my $client = MongoDB->connect('mongodb://localhost');
+$set->latex($client,config);
 
 #my @probs = @{$set->problems}; 
 #push(@probs,$problems->[0]->{_id});

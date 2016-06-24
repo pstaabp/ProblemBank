@@ -1,7 +1,7 @@
 package Model::Problem;
  
 use Moo;
-use Types::Standard qw( Str Int );
+use Types::Standard qw( Str Int HashRef );
 use DateTime;
 #use MooX::Types::MooseLike::DateTime qw/DateAndTime/;
 use File::Temp;
@@ -18,6 +18,7 @@ has text_latex => (is => 'rw', isa =>Str);
 #has text_latex_date => (is => 'rw', isa => DateAndTime); 
 #has solution_latex => (is => 'rw', isa =>Str); 
 #has description => (is => 'rw', isa=>Str); 
+has type => (is =>'ro', isa =>HashRef[Str]);
 has module_id => (is => 'rw', isa=>Str);
 has author_id => (is => 'rw', isa=>Str);
 has language => (is => 'rw', isa=>Str, default => sub { "markdown";}); 
@@ -57,15 +58,7 @@ sub md_to_latex {
   #my $fname_pdf = $fh_pdf->filename; 
   my $source = $self->text_md; 
    
-  #my $find1 = "\\\\\\("; 
-  #my $find2 = "\\\\\\)"; 
-  #my $find3 = '\\\\\\$'; 
-  #my $replace = '$'; 
-  #$source =~ s/$find1/$replace/g; 
-  #$source =~ s/$find2/$replace/g; 
-  #$source =~ s/$find3/$replace/g; 
-   
-   print $fh_md $source;  
+  print $fh_md $source;  
    
    #print $source; 
    

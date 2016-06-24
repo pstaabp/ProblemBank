@@ -50,8 +50,8 @@ define(["module","backbone","jquery","underscore","models/Author","models/Author
             return {value: mod.get("_id") , label: mod.get("name")}; }); },
                                                          defaultOption: {value: null, label: "Choose Module..."}}},
       "#text": "text_md",
-      "#solution": "solution_md"
-
+      "#solution": "solution_md",
+      ".problem-type": "type"
     },
     addProblem: function () {
       console.log(this.model.attributes); 

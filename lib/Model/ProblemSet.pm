@@ -28,11 +28,10 @@ sub remove_from_db {
 }
 
 sub latex {
-  my ($self,$client,$app_config) = shift; 
+  my ($self,$client,$app_config) = @_; 
   my $s = ""; 
   
   print "in Model::ProblemSet::latex \n";
-  
   for my $probid (@{$self->problems}) {
     my $prob = get_one_by_id($client,"problemdb.problems","Model::Problem",$probid); 
     $s .= "\\item " . $prob->get_latex; 
@@ -50,6 +49,8 @@ sub latex {
       EVAL_PERL    => 1,               # evaluate Perl code blocks
   };
   
+  print dump $config;
+  
   # create Template object
   my $template = Template->new($config);
 
@@ -59,7 +60,7 @@ sub latex {
   
   my $latex_out = system('/Library/TeX/texbin/pdflatex',"-output-directory=$output_dir","$output_dir/test.tex");
   
-  debug $!; 
+  print $!; 
 
 
 }
