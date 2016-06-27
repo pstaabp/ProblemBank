@@ -1,7 +1,7 @@
 package Model::Problem;
  
 use Moo;
-use Types::Standard qw( Str Int HashRef );
+use Types::Standard qw( Str Int ArrayRef );
 use DateTime;
 #use MooX::Types::MooseLike::DateTime qw/DateAndTime/;
 use File::Temp;
@@ -18,7 +18,7 @@ has text_latex => (is => 'rw', isa =>Str);
 #has text_latex_date => (is => 'rw', isa => DateAndTime); 
 #has solution_latex => (is => 'rw', isa =>Str); 
 #has description => (is => 'rw', isa=>Str); 
-has type => (is =>'ro', isa =>HashRef[Str]);
+has type => (is =>'ro', isa =>ArrayRef[Str]);
 has module_id => (is => 'rw', isa=>Str);
 has author_id => (is => 'rw', isa=>Str);
 has language => (is => 'rw', isa=>Str, default => sub { "markdown";}); 

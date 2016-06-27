@@ -1,10 +1,35 @@
-<script type="text/template" id="list-problems-template"> 
+<script type="text/template" id="list-problems-template">
 
   <div id="header">
     <h1>Problem Set Editor</h1>
-    <div class="inline-form">
+    <div class="horizontal-form">
+      <div class="form-group">
+        <label for="set-name" class="control-label col-sm-2" style="text-align: right">Set name: </label>
+        <div class="col-sm-2">
+          <input id="set-name" class="control-form">
+        </div>
+        <div class="col-sm-offset-1 col-sm-4"
+        <label class="radio-inline">
+          <input type="radio" name="set-type" id="set-type-quiz" value="quiz"> Quiz
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="set-type" id="set-type-hw" value="hw"> HW
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="set-type" id="set-type-exam" value="exam"> Exam
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="set-type" id="set-type-other" value="other"> Other
+        </label>
+
+      </div>
+
+
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-7 col-sm-2">
         <button class="latex-all btn btn-primary">LaTeX All Problems</button>
-        <a href="/output/test.pdf" target="_blank">result</a>
+      </div>
     </div>
   </div>
   <div id="problems-container" class="row">
@@ -17,12 +42,10 @@
    <div class="problem-container">
      <div class="btn-group btn-group-sm" role="group">
        <a class="edit-button btn btn-default" href="/problem/<%=_id%>">Edit</a>
-       <a class="add-button btn btn-default">Add to Set</a>
-       <a class="delete-button btn btn-default">Delete Problem</a>
-       <a class="latex-button btn btn-default">LaTeX me!</a>
+       <a class="delete-button btn btn-default">Remove Problem</a>
      </div>
      <div class="problem-viewer">
-     
+
      </div>
    </div>
 </script>

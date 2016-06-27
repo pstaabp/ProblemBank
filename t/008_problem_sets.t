@@ -35,7 +35,7 @@ my $sets = from_json $res->content;
 
 ## get the first set in the database
 
-my $id = $sets->[0]->{_id};
+my $id = $sets->[1]->{_id};
 
 my $route = "/problemsets/$id"; 
 $res = $test_api->request(GET $route);
@@ -46,7 +46,29 @@ my $params = from_json $res->content;
 my $set = Model::ProblemSet->new($params); 
 
 my $client = MongoDB->connect('mongodb://localhost');
-$set->latex($client,config);
+#$set->latex($client,config);
+
+
+## make a new problem
+
+$params = {
+  author_id      => "574e26ab541e65746324b921",
+  description    => "",
+  module_id      => "574f42af541e65895b6aed14",
+  solution_latex => "",
+  solution_md    => "",
+  text_latex     => "",
+  text_md        => "Determine if the following set of points represents a function, \\\\((1,2),(2,3),(3,0),(1,4)\\\\).  Explain.",
+  type           => ["wr", "qu"],
+}; 
+
+
+#ok($type->($params->{type}), 'yess');
+
+$res = $test_api->request(POST '/problems','Content-Type' => 'application/json', Content => to_json($params));
+ok($res->is_success, '[POST /problems ] successful');            
+#dd $res; 
+            
 
 #my @probs = @{$set->problems}; 
 #push(@probs,$problems->[0]->{_id});
