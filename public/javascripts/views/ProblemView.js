@@ -5,12 +5,17 @@ define(["backbone","jquery","markdown"], function(Backbone,$,markdown) {
     template: _.template($("#problem-template").html()),
     initialize: function(options) {
       _(this).extend(_(options).pick("parent"));
+      this.show = options.show || "problem";
     },
     render: function() {
       var md = markdown();
       this.$el.html(this.template({_id: this.model.get("_id")}));
-      this.$(".problem-viewer").html(md.render(this.model.get("text_md")));
-      
+      if (this.show === "problem"){
+        this.$(".problem-viewer").html(md.render(this.model.get("text_md")));
+      } else {
+        this.$(".problem-viewer").html(md.render(this.model.get("solution_md")));
+      }
+
       return this;
     },
     events: {
@@ -24,19 +29,19 @@ define(["backbone","jquery","markdown"], function(Backbone,$,markdown) {
     },
     deleteProblem: function() {
       var self = this;
-      var conf = confirm("Do you want to delete this problem?"); 
+      var conf = confirm("Do you want to delete this problem?");
       if(conf){
           this.model.destroy({success: function(data) {
-            console.log(data); 
+            console.log(data);
             self.remove();
           }});
       }
-                         
+
     },
     latexProblem: function (){
       this.model.latex();
     }
-  }); 
+  });
 
   return ProblemView;
-}); 
+});

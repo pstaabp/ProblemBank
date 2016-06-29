@@ -15,32 +15,67 @@ define(["module","backbone","jquery","mathjax","models/AuthorList",
       this.problemSets = new ProblemSetList(module.config().problem_sets,{parse: true,all_problems:this.problemList}); // make sure that all_problems is passed in.
       this.model = this.problemSets.findWhere({_id: module.config().set_id});
       this.render();
+      this.model.on("change", function(_model){
+        _model.save();
+      });
     },
     render: function (){
       var self = this;
       this.$el.html($("#list-problems-template").html());
 
-      this.$("#problems-container ul").html();
+      this.$("#problems-container ul").html("");
+      this.$("#solutions-container ul").html("");
 
       this.model.get("problems").each(function(prob){
-        self.$("#problems-container ul.problem-list").append(new ProblemView({model: prob}).render().el);
+        self.$("#problems-container ul.problem-list").append(new ProblemView({model: prob, show:"problem"}).render().el);
+        self.$("#solutions-container ul.problem-list").append(new ProblemView({model: prob, show:"solution"}).render().el);
       });
+
       MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
       this.stickit();
     },
     events: {
       "show.bs.modal #add-author-modal": "addNewAuthor",
       "click #add-problem-button": "addProblem",
-      "click .latex-all": "latexProblems",
+      "click #latex-button": "latexProblems",
+      "click #solutions-button": "latexProblems",
+      "click #log-button": "showLog",
       "click #new-problem-set-button": "createNewProblemSet"
     },
-    latexProblems: function() {
-      $.ajax("/api/problemsets/" + this.model.get("_id") + "/latex",{type: "POST",success: function(data)     {console.log("yeah!");console.log(data);}});
+    latexProblems: function(evt) {
+      var self = this;
+      var target = $(evt.target);
+      var solution_clicked = (evt.target.id=="solutions-button");
+      var url ="/api/problemsets/" + this.model.get("_id") + "/latex";
+      if (solution_clicked){
+        url += "?solution=true"
+      }
+      $.ajax(url,{type: "POST",success: function(data){
+        var logButton = solution_clicked ? "#solutions-log-button": "#log-button";
+        var outButton = solution_clicked ? "#solutions-output-button" : "#output-button";
+        if (data.errors==1){
+          self.$(logButton).removeAttr("disabled");
+          self.$(outButton).attr("disabled","disabled");
+          self.log = data.log;
+          //
+        } else {
+          self.$(outButton).attr("href",data.pdf).attr("target","_blank").removeAttr("disabled");
+          self.$(logButton).attr("disabled","disabled");
+        } }});
 
+    },
+    showLog: function() {
+      this.$("#latex-log-modal .modal-body").html(this.log)
+      this.$("#latex-log-modal").modal("show");
     },
     bindings: {
       "#set-type": "type",
-      "#set-name": "name"
+      "#set-name": {observe: "name", events: ["blur"]},
+      "#institution": {observe:"institution", events: ["blur"]},
+      "#set-header": {observe:"header",  events: ["blur"]},
+      "#instructor": {observe: "instructor", events: ["blur"]},
+      "#course-name": {observe: "course_name", events: ["blur"]},
+      "#date": {observe: "date", events: ["blur"]}
     },
     createNewProblemSet: function(){
       var self = this;

@@ -11,26 +11,26 @@ our @EXPORT_OK = qw(to_hashes insert_to_db get_all_in_collection get_one_by_id);
 ###
 #  input: array reference of Model::Modules
 #  ouput:  array reference of hash representations
-# 
+#
 ###
 
-sub to_hashes { 
-  my $modules = shift; 
+sub to_hashes {
+  my $modules = shift;
   my @output = map { $_->to_hash} @{$modules};
-  return \@output; 
+  return \@output;
 }
 
 ##
 #
-#  A common inserting to the database. 
+#  A common inserting to the database.
 #
-#  Note: needs some error checking.  
+#  Note: needs some error checking.
 
 sub insert_to_db {
-  my ($client,$collection_name,$obj) = @_; 
+  my ($client,$collection_name,$obj) = @_;
   my $collection = $client->ns($collection_name);
   my $result = $collection->insert_one($obj);
-  $obj->{_id} = $result->{inserted_id}->{value}; 
+  $obj->{_id} = $result->{inserted_id}->{value};
   return $obj;
 }
 
@@ -43,6 +43,12 @@ sub insert_to_db {
 sub get_all_in_collection {
   my ($client,$collection_name,$class) = @_;  # need to pass a mongo collection
   my $mc = $client->ns($collection_name);
+  print "in get_all_in_collection: $class \n";
+  #print dump $mc->find->all;
+  for my $item ($mc->find->all){
+    print dump $item;  print "\n";
+
+  };
   my @items = map {$class->new($_);} $mc->find->all;
   return \@items;
 }
@@ -55,12 +61,12 @@ sub get_all_in_collection {
 
 sub get_one_by_id {
   my ($client,$collection_name,$class,$id) = @_;
-  my $collection = $client->ns($collection_name); 
+  my $collection = $client->ns($collection_name);
   my $id_obj = MongoDB::OID->new(value => $id);
   my $result = $collection->find_id($id_obj);
-  return $class->new($result); 
+  return $class->new($result);
 }
 
 
 
-1; 
+1;

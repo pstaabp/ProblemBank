@@ -22,9 +22,9 @@ define(["module","backbone","jquery","underscore","mathjax","models/Author","mod
         $("#message").html(this.edit?"Updated the Problem":"Saved the Problem")
                     .show("slide",{direction: "up"})
                     .delay(20000).hide("slide",{direction: "up"});
-        if(!this.edit){
+        if(!self.edit){
           self.model = new Problem();
-          self.stickit(); 
+          self.stickit();
         }
       });
 
@@ -49,7 +49,14 @@ define(["module","backbone","jquery","underscore","mathjax","models/Author","mod
         }
 
       });
-      this.$("#solution").markdown();
+      this.$("#solution").markdown({
+        onPostProcess: function() { MathJax.Hub.Queue(["Typeset",MathJax.Hub]);},
+        onPreview: function(e){
+          var md = markdown_it();
+          return md.render(e.getContent());
+        }
+
+      });
       this.stickit();
     },
     events: {

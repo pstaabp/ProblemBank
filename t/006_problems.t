@@ -4,38 +4,41 @@ use warnings;
 use lib '../lib';
 
 use Routes::API;
-#use Routes::Template; 
+use Routes::Templates;
 use Test::More tests => 6;
 use Plack::Test;
 use JSON;
 use HTTP::Request::Common;
-use Model::Problem; 
+use Model::Problem;
 
 use Data::Dump qw/dd/;
 
-#my $app = Routes::Templates->to_app;
-my $api_app = Routes::API->to_app; 
 
 ## test that the /problems route exists
 
-#my $test = Plack::Test->create($app);
-my $test_api = Plack::Test->create($api_app);
-my $res  = $test_api->request( GET '/problems' );
+#my $test_api = Plack::Test->create(Routes::API->to_app);
+#my $res  = $test_api->request( GET '/problems' );
 
-ok( $res->is_success, '[GET /problems] successful' );
+#ok( $res->is_success, '[GET /problems] successful' );
 
-my $modules = decode_json $res->content; 
-is(ref($modules),"ARRAY","[GET /problems] returns an array"); 
+#my $modules = decode_json $res->content;
+#is(ref($modules),"ARRAY","[GET /problems] returns an array");
 
 ### test to see if it returns a problem
-$res = $test_api->request(GET '/problems/57605ae1541e657ea6104f61');
+#$res = $test_api->request(GET '/problems/57605ae1541e657ea6104f61');
 
 
 
 #$res = $test_api->request(GET '/problems/' . $modules->[2]->{_id});
 
-dd $modules;
+#dd $modules;
 
+## test the templating routes:
+
+my $test_template = Plack::Test->create(Routes::Templates->to_app);
+
+my $res = $test_template->request(GET '/problem/5752bba7541e6535c839bb11');
+ok($res->is_success, 'GET /problem/5752bba7541e6535c839bb11 successful');
 
 
 #ok( $res->is_success, '[GET /problems/' . $modules->[2]->{_id} .'] successful' );
@@ -54,18 +57,15 @@ dd $modules;
 #
 #
 #
-###dd decode_json $res->content; 
+###dd decode_json $res->content;
 #
 ####
 ##  Create a new problem
-#### 
-#my $params = {text_md => "This is a new problem", solution_md => "This is the solution"}; 
-#$res = $test_api->request(POST '/problems','Content-Type' => 'application/json', Content => 
-#  encode_json($params)); 
+####
+#my $params = {text_md => "This is a new problem", solution_md => "This is the solution"};
+#$res = $test_api->request(POST '/problems','Content-Type' => 'application/json', Content =>
+#  encode_json($params));
 
-#dd $res->content; 
+#dd $res->content;
 
 done_testing();
-
-
-

@@ -2,39 +2,116 @@
 
   <div id="header">
     <h1>Problem Set Editor</h1>
-    <div class="horizontal-form">
+  </div>
+  <div class="row"
+    <div class="form-horizontal">
       <div class="form-group">
         <label for="set-name" class="control-label col-sm-2" style="text-align: right">Set name: </label>
-        <div class="col-sm-2">
-          <input id="set-name" class="control-form">
+        <div class="col-sm-4">
+          <input id="set-name" class="form-control">
         </div>
-        <div class="col-sm-offset-1 col-sm-4"
-        <label class="radio-inline">
-          <input type="radio" name="set-type" id="set-type-quiz" value="quiz"> Quiz
-        </label>
-        <label class="radio-inline">
-          <input type="radio" name="set-type" id="set-type-hw" value="hw"> HW
-        </label>
-        <label class="radio-inline">
-          <input type="radio" name="set-type" id="set-type-exam" value="exam"> Exam
-        </label>
-        <label class="radio-inline">
-          <input type="radio" name="set-type" id="set-type-other" value="other"> Other
-        </label>
-
-      </div>
-
-
-    </div>
-    <div class="form-group">
-      <div class="col-sm-offset-7 col-sm-2">
-        <button class="latex-all btn btn-primary">LaTeX All Problems</button>
+      <div class="col-sm-5">
+        <div class="btn-group">
+          <button id="latex-button" class="btn btn-primary">Produce Problem Hardcopy</button>
+          <a id="output-button" class="btn btn-default" disabled="disabled">Output</a>
+          <button id="log-button" class="btn btn-default" disabled="disabled">Log</button>
+        </div>
       </div>
     </div>
   </div>
-  <div id="problems-container" class="row">
-  <ul class="problem-list col-sm-8 col-sm-offset-2"></ul>
+  <div style="height: 10px"></div>
+  <div class="form-horizontal">
+    <div class="col-sm-5 col-sm-offset-6">
+      <div class="btn-group">
+        <button id="solutions-button" class="btn btn-primary">Produce Solution Hardcopy</button>
+        <a id="solutions-output-button" class="btn btn-default" disabled="disabled">Output</a>
+        <button id="solutions-log-button" class="btn btn-default" disabled="disabled">Log</button>
+      </div>
+    </div>
   </div>
+</div>
+</div>
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10"
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#problems" aria-controls="problems" role="tab" data-toggle="tab">Problems</a></li>
+      <li role="presentation"><a href="#solutions" aria-controls="solutions" role="tab" data-toggle="tab">Solutions</a></li>
+      <li role="presentation"><a href="#headers" aria-controls="headers" role="tab" data-toggle="tab">Headers</a></li>
+    </ul>
+  </div>
+  </div>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="problems">
+        <div id="problems-container" class="row">
+        <ul class="problem-list col-sm-10 col-sm-offset-1"></ul>
+        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="solutions">
+        <div id="solutions-container" class="row">
+        <ul class="problem-list col-sm-10 col-sm-offset-1"></ul>
+        </div>
+      </div>
+
+      <div role="tabpanel" class="tab-pane" id="headers">
+        <div class="row">
+          <div class="col-sm-10 col-sm-offset-1">
+            <div class="form-horizontal">
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="instructor">Instructor</label>
+                  <div class="col-sm-4"><input id="instructor" class="form-control" type="text">
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="course">Course Name</label>
+                  <div class="col-sm-4"><input id="course-name" class="form-control" type="text">
+              </div>
+            </div>
+
+            <div class="form-horizontal">
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="institution">Institution</label>
+                  <div class="col-sm-4"><input id="institution" class="form-control" type="text">
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="date">Date</label>
+                  <div class="col-sm-4"><input id="date" class="form-control" type="text">
+              </div>
+
+            </div>
+            <div class="form-group">
+              <label for="set-header">Set Header</label>
+              <textarea class="form-control" id="set-header" rows="10"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+  <div class="modal fade" id="latex-log-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">LaTeX log file</h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
 
 </script>
 

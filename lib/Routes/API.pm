@@ -160,12 +160,15 @@ put '/problemsets/:set_id' => sub {
   my $client = MongoDB->connect('mongodb://localhost');
   my $set = get_one_by_id($client,"problemdb.problemsets","Model::ProblemSet",route_parameters->{set_id});
   my @problems =  body_parameters->get_all("problems");
-  my $name = body_parameters->{name};
-  $set->name($name);
+  $set->name(body_parameters->{name});
+  $set->institution(body_parameters->{institution});
+  $set->instructor(body_parameters->{instructor});
+  $set->date(body_parameters->{date});
+  $set->header(body_parameters->{header});
+  $set->course_name(body_parameters->{course_name});
   $set->problems(\@problems);
   $set->update_in_db($client,"problemdb.problemsets");
 
-  debug dump $set;
   return $set->to_hash;
 };
 
@@ -185,9 +188,7 @@ post '/problemsets/:set_id/latex' => sub {
   debug 'in POST /problemsets/:set_id/latex';
   my $client = MongoDB->connect('mongodb://localhost');
   my $set = get_one_by_id($client,"problemdb.problemsets","Model::ProblemSet",route_parameters->{set_id});
-  $set->latex($client,config);
-
-  return {msg => "yeah"};
+  return $set->latex($client,config,query_parameters->{solution});
 
 };
 
