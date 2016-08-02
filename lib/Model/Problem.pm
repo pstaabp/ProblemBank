@@ -18,7 +18,7 @@ has text_latex => (is => 'rw', isa =>Str, default => sub {return "";});
 #has text_latex_date => (is => 'rw', isa => DateAndTime);
 has solution_latex => (is => 'rw', isa =>Str);
 #has description => (is => 'rw', isa=>Str);
-has type => (is =>'ro', isa =>ArrayRef[Str], default => sub { return [];});
+has type => (is =>'rw', isa =>ArrayRef[Str],  default => sub { return [];});
 has module_id => (is => 'rw', isa=>Str, default => sub {return "";});
 has author_id => (is => 'rw', isa=>Str, default => sub {return "";});
 has language => (is => 'rw', isa=>Str, default => sub { "markdown";});

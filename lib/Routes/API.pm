@@ -84,7 +84,7 @@ post '/problems' => sub { # add a problem.
   debug ref body_parameters->as_hashref_mixed->{type};
   my $type = ArrayRef[Str];
 
-  print "testing: " . $type->(body_parameters->mixed->{type}) . "\n";
+  #print "testing: " . $type->(body_parameters->mixed->{type}) . "\n";
   my $problem = Model::ProblemList::insert_new_problem($client,body_parameters->as_hashref_mixed);
 
   return $problem->to_hash;

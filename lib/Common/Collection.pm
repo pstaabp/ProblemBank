@@ -43,12 +43,12 @@ sub insert_to_db {
 sub get_all_in_collection {
   my ($client,$collection_name,$class) = @_;  # need to pass a mongo collection
   my $mc = $client->ns($collection_name);
-  print "in get_all_in_collection: $class \n";
+  # print "in get_all_in_collection: $class \n";
   #print dump $mc->find->all;
-  for my $item ($mc->find->all){
-    print dump $item;  print "\n";
-
-  };
+  # for my $item ($mc->find->all){
+  #   print dump $item;  print "\n";
+  #
+  # };
   my @items = map {$class->new($_);} $mc->find->all;
   return \@items;
 }

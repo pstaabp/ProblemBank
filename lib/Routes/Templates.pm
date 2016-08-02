@@ -32,9 +32,9 @@ get '/problem' => sub {
 
 };
 
-get '/problem/:problem_id' => sub {
+get '/problems/:problem_id' => sub {
 
-    debug "in GET /problem/:problem_id";
+    debug "in GET /problems/:problem_id";
     my $params = getAllData();
     $params->{appname} = "AddProblemView";
     $params->{header} = "Problem Editor";
@@ -59,7 +59,7 @@ get '/modules' => sub {
 
 sub getAllData {
     my $client = MongoDB->connect('mongodb://localhost');
-    print "in getAllData\n";
+    # print "in getAllData\n";
     my $authors = to_hashes(get_all_in_collection($client,"problemdb.authors","Model::Author"));
     my $modules = to_hashes(get_all_in_collection($client,"problemdb.modules","Model::Module"));
     my $problems = to_hashes(get_all_in_collection($client,"problemdb.problems","Model::Problem"));
