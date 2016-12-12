@@ -16,6 +16,7 @@ define(["module","backbone","jquery","mathjax","models/AuthorList","markdown",
       this.model = new Backbone.Model({set_id: null, new_set_name: "", problem_set: null, module_id: null});
       this.model.on("change:set_id",function() {
         self.model.set("problem_set",self.problemSets.findWhere({_id: self.model.get("set_id")}));
+        self.updateProblemsInSet();
       }).on("change:module_id", this.filterByModule,this);
 
       this.render();
@@ -48,6 +49,7 @@ define(["module","backbone","jquery","mathjax","models/AuthorList","markdown",
       }
       MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
       this.stickit();
+      this.updateProblemsInSet();
     },
     events: {
       "show.bs.modal #add-problem-set-modal": "showNewSetModal"
@@ -75,6 +77,18 @@ define(["module","backbone","jquery","mathjax","models/AuthorList","markdown",
     showNewSetModal: function(){
       var self = this;
       this.newSetModal.render();
+    },
+    updateProblemsInSet: function(){
+      var self = this;
+      this.$(".in-set").addClass("invisible");
+      var set = this.model.get("problem_set");
+      if(set){
+        set.get("problems").each(function(prob){
+           self.$("#"+prob.get("_id")+ " .in-set").removeClass("invisible");
+        });
+      }
+      console.log("in updateProblemsInSet");
+
     }
   });
 

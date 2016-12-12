@@ -14,6 +14,9 @@ log: "debug"
 # should Dancer2 consider warnings as critical errors?
 warnings: 1
 
+# This sets that if there is a template in the view direction a route is automatically generated.
+auto_page: 0
+
 # should Dancer2 show a stacktrace when an 5xx error is caught?
 # if set to yes, public/500.html will be ignored and either
 # views/500.tt, 'error_template' template, or a default error template will be used.
@@ -23,3 +26,9 @@ show_errors: 1
 startup_info: 1
 
 template: "template_toolkit"
+
+plugins:
+      Auth::Extensible:
+          realms:
+              users:
+                  provider: LDAP

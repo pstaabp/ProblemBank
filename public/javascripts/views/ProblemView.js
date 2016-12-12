@@ -15,6 +15,7 @@ define(["backbone","jquery","markdown"], function(Backbone,$,markdown) {
       } else {
         this.$(".problem-viewer").html(md.render(this.model.get("solution_md")));
       }
+      this.$el.attr("id",this.model.get("_id"));
 
       return this;
     },
