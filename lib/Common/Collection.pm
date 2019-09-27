@@ -14,11 +14,11 @@ our @EXPORT_OK = qw(to_hashes insert_to_db get_all_in_collection get_one_by_id);
 #
 ###
 
-sub to_hashes {
-  my $modules = shift;
-  my @output = map { $_->to_hash} @{$modules};
-  return \@output;
-}
+# sub to_hashes {
+#   my $modules = shift;
+#   my @output = map { $_->to_hash} @{$modules};
+#   return \@output;
+# }
 
 ##
 #

@@ -60,13 +60,13 @@ get '/problems/:problem_id' => sub {
    debug 'in /problems/:problem_id';
    my $client = MongoDB->connect('mongodb://localhost');
    my $prob = get_one_by_id($client,'problemdb.problems','Model::Problem',route_parameters->{problem_id});
-   return $prob->to_hash;
+   return $prob;
 };
 
 put '/problems/:problem_id' => sub {
    my $client = MongoDB->connect('mongodb://localhost');
    my $prob = Model::ProblemList::update_problem_by_id($client,route_parameters->{problem_id},body_parameters->as_hashref);
-   return $prob->to_hash;
+   return $prob;
 };
 
 del '/problems/:problem_id' => sub {
@@ -87,7 +87,7 @@ post '/problems' => sub { # add a problem.
   #print "testing: " . $type->(body_parameters->mixed->{type}) . "\n";
   my $problem = Model::ProblemList::insert_new_problem($client,body_parameters->as_hashref_mixed);
 
-  return $problem->to_hash;
+  return $problem;
 };
 
 post '/problems/latex' => sub {
@@ -143,7 +143,7 @@ post '/problemsets' => sub {
   my $newProblemSet = Model::ProblemSet->new(body_parameters->as_hashref);
   $newProblemSet->insert_to_db(MongoDB->connect('mongodb://localhost'));
 
-  return $newProblemSet->to_hash;
+  return $newProblemSet;
 };
 
 get '/problemsets/:set_id' => sub {
@@ -151,7 +151,7 @@ get '/problemsets/:set_id' => sub {
   my $client = MongoDB->connect('mongodb://localhost');
   my $set = get_one_by_id($client,"problemdb.problemsets","Model::ProblemSet",route_parameters->{set_id});
 
-  return $set->to_hash;
+  return $set;
 };
 
 
@@ -169,7 +169,7 @@ put '/problemsets/:set_id' => sub {
   $set->problems(\@problems);
   $set->update_in_db($client,"problemdb.problemsets");
 
-  return $set->to_hash;
+  return $set;
 };
 
 del '/problemsets/:set_id' => sub {
@@ -208,7 +208,7 @@ get '/module' => sub {
   my $mod = $mc->find_one;
 
   my $mod2 = Model::Module->new($mod);
-  return $mod2->to_hash;
+  return $mod2;
 
 };
 
@@ -216,7 +216,7 @@ post '/modules' => sub { # add a module
   my $newModule = Model::Module->new(body_parameters->as_hashref);
   $newModule->insert_to_db(MongoDB->connect('mongodb://localhost'));
 
-  return $newModule->to_hash;
+  return $newModule;
 };
 
 

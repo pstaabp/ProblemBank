@@ -59,7 +59,7 @@ sub update_problem_by_id {
   $prob->module_id($params->{module_id});
   $prob->author_id($params->{author_id});
   #$prob->text_md_date(DateTime->now);
-  my $prob_to_update = $prob->to_hash;
+  my $prob_to_update = $prob->TO_JSON;
   delete $prob_to_update->{_id};
 
   #debug dump $prob_to_update;
