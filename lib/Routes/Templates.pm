@@ -2,29 +2,28 @@
 package Routes::Templates;
 use Dancer2;
 
+use Dancer2::Plugin::Auth::Extensible;  ## this handles the users and roles.  See the configuration file for setup.
+
 use Common::Collection qw/to_hashes get_all_in_collection/;
 use Data::Dump qw/dump/;
-
-# This sets that if there is a template in the view direction a route is automatically generated.
-set auto_page => 0;
 
 get '/' => sub {
     template 'index';
 };
 
-get '/problems' => sub {
+get '/problems' => require_login sub {
     my $params = getAllData();
     $params->{appname} = "ListProblemsView";
     template 'problems', $params;
 };
 
-get '/problemsets' => sub {
+get '/problemsets' => require_login sub {
     my $params = getAllData();
     $params->{appname} = "ProblemSetsView";
     template 'problemsets', $params;
 };
 
-get '/problem' => sub {
+get '/problem' => require_login sub {
     my $params = getAllData();
     $params->{appname} = "AddProblemView";
     $params->{header} = "Add New Problem";
@@ -32,7 +31,7 @@ get '/problem' => sub {
 
 };
 
-get '/problems/:problem_id' => sub {
+get '/problems/:problem_id' => require_login sub {
 
     debug "in GET /problems/:problem_id";
     my $params = getAllData();
@@ -42,7 +41,7 @@ get '/problems/:problem_id' => sub {
     template 'problem', $params;
 };
 
-get '/problemsets/:set_id' => sub {
+get '/problemsets/:set_id' => require_login sub {
   my $params = getAllData();
   $params->{appname} = "ProblemSetView";
   $params->{header} = "Problem Set Editor";
@@ -51,7 +50,7 @@ get '/problemsets/:set_id' => sub {
 };
 
 
-get '/modules' => sub {
+get '/modules' => require_login sub {
     my $client = MongoDB->connect('mongodb://localhost');
     my $modules = to_hashes(get_all_in_collection($client,"problemdb.modules","Model::Module"));
     template 'modules', {appname => "EditModulesView",modules=> to_json($modules)};
