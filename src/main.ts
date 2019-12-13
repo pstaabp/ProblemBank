@@ -1,7 +1,14 @@
 import Vue from 'vue';
+import Vuex from 'vuex';
 import App from './App.vue';
 import router from './router';
-import store from './store';
+import ProblemBankStore from './store';
+
+const store = new Vuex.Store({
+  modules: {
+    myMod: ProblemBankStore,
+  },
+});
 
 import BootstrapVue from 'bootstrap-vue';
 Vue.use(BootstrapVue);

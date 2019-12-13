@@ -7,14 +7,32 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import MenuBar from '@/components/MenuBar';
+import MenuBar from '@/components/MenuBar.vue';
+
+import axios from 'axios';
+
+import { getModule } from 'vuex-module-decorators';
+import WeBWorKStore from '@/store';
+const store = getModule(WeBWorKStore);
+
 
 @Component({
+  name: 'ProblemBankApp',
   components: {
     MenuBar,
   },
 })
-export default class Home extends Vue {}
+export default class ProblemBankApp extends Vue {
+  public  created() {
+    // tslint:disable-next-line
+    console.log("Loading data");
+    axios.get('/api/problems/')
+      .then( (response) => {
+        // tslint:disable-next-line
+        console.log(response);
+    });
+  }
+}
 </script>
 
 
@@ -25,17 +43,5 @@ export default class Home extends Vue {}
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>

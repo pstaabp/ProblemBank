@@ -3,14 +3,18 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {
+import {VuexModule, Module, Mutation, Action} from 'vuex-module-decorators';
 
-  },
-  mutations: {
+import ProblemList from '@/models/ProblemList';
 
-  },
-  actions: {
+const store = new Vuex.Store({});
 
-  },
-});
+@Module({
+  name: 'ProblemBankStore',
+  store,
+  dynamic: true,
+})
+export default class ProblemBankStore extends VuexModule {
+  public problems: ProblemList =  new ProblemList();
+
+}

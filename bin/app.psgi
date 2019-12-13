@@ -9,7 +9,7 @@ use Routes::Templates;
 use Routes::API;
 use Plack::Builder;
 
-#BEGIN { $ENV{'PLACK_ENV'} = 'production'; }
+BEGIN { $ENV{'PLACK_ENV'} = 'development'; }
 
 builder {
     mount '/'    => Routes::Templates->to_app;

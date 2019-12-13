@@ -14,6 +14,8 @@ log: "debug"
 # should Dancer2 consider warnings as critical errors?
 warnings: 1
 
+port: 8080
+
 # This sets that if there is a template in the view direction a route is automatically generated.
 auto_page: 0
 
