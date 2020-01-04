@@ -13,6 +13,9 @@ use Common::Collection qw/to_hashes get_one_by_id get_all_in_collection/;
 use Data::Dump qw/dump/;
 use Types::Standard qw/ArrayRef Str/;
 
+get '/' => sub {
+  return {msg => "hi"};
+};
 
 post '/authors' => sub { # add a new author
 
@@ -30,23 +33,18 @@ post '/authors' => sub { # add a new author
 
 ### problem routes
 
-post '/problems/:problem_id/latex' => sub {
+post '/problems/:problem_id/compile' => sub {
     my $client = MongoDB->connect('mongodb://localhost');
     my $prob = get_problem_by_id($client,route_parameters->{problem_id});
-
-    if($prob->language eq 'markdown') {
-      $prob->md_to_latex;
-    } else {
-      $prob->latex_to_md;
-    }
-
-   return {msg => "hi"};
+    return $prob->compile_question;
 };
 
 get '/problems' => sub { # get an array of all modules
     my $client = MongoDB->connect('mongodb://localhost');
     my $problems = problem_collection($client);
+    debug to_hashes($problems);
     return to_hashes($problems);
+    #return [{msg => "hi"}];
 };
 
 ###
@@ -80,14 +78,15 @@ post '/problems' => sub { # add a problem.
 
   #debug "in post /problems";
   my $client = MongoDB->connect('mongodb://localhost');
-  debug dump body_parameters->mixed;
-  debug ref body_parameters->as_hashref_mixed->{type};
+  #debug dump body_parameters->as_hashref_mixed;
   my $type = ArrayRef[Str];
 
   #print "testing: " . $type->(body_parameters->mixed->{type}) . "\n";
   my $problem = Model::ProblemList::insert_new_problem($client,body_parameters->as_hashref_mixed);
 
-  return $problem;
+  debug "in post /problems";
+  debug $problem->to_hash;
+  return $problem->to_hash;
 };
 
 post '/problems/latex' => sub {

@@ -6,24 +6,19 @@ use DateTime;
 #use MooX::Types::MooseLike::DateTime qw/DateAndTime/;
 use File::Temp;
 use File::Slurp qw/read_file/;
-use Data::Dump qw/dump/;
+use Data::Dump qw/dd/;
 use Scalar::Util qw(looks_like_number);
 
 with 'Common::MongoDBable';
 
-has text_md => (is => 'rw', isa =>Str, default => sub {return "";});
-#has text_md_date => (is => 'rw', isa => DateAndTime);
-has solution_md => (is => 'rw', isa =>Str, default => sub {return "";});
-has text_latex => (is => 'rw', isa =>Str, default => sub {return "";});
-#has text_latex_date => (is => 'rw', isa => DateAndTime);
-has solution_latex => (is => 'rw', isa =>Str);
-#has description => (is => 'rw', isa=>Str);
-has type => (is =>'rw', isa =>ArrayRef[Str],  default => sub { return [];});
+has problem_source => (is => 'rw', isa =>Str, default => sub {return "";});
+has solution_source => (is => 'rw', isa =>Str, default => sub {return "";});
+#has type => (is =>'rw', isa =>ArrayRef[Str],  default => sub { return [];});
 has module_id => (is => 'rw', isa=>Str, default => sub {return "";});
 has author_id => (is => 'rw', isa=>Str, default => sub {return "";});
 has language => (is => 'rw', isa=>Str, default => sub { "markdown";});
 
-our @non_date_fields = qw/text_md solution_md text_latex solution_latex description
+our @non_date_fields = qw/problem_source solution_source
                           module_id author_id language _id/;
 
 #around BUILDARGS => sub {
@@ -90,6 +85,11 @@ sub get_solution {
   return $self->solution_latex;
 }
 
+sub compile_question {
+  my $self = shift;
+  return $self->problem_source;
+}
+
 sub compile_markdown {
   my $self = shift;
   return $self->text_md;
@@ -119,13 +119,13 @@ sub to_hash {
     for my $field (@non_date_fields) {
         $hash->{$field} = $self->{$field};
     }
+    $hash->{_id} = $self->{_id}->TO_JSON;
+    #$hash->{_id} = $self->{_id}
 
     #$hash->{text_md_date} = $self->text_md_date->epoch()
     #  if defined($self->text_md_date) && $self->text_md_date->isa("DateTime");
     #$hash->{text_latex_date} = $self->text_latex_date->epoch() if defined($self->text_latex_date);
     return $hash;
 }
-
-
 
 1;

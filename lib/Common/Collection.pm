@@ -14,11 +14,11 @@ our @EXPORT_OK = qw(to_hashes insert_to_db get_all_in_collection get_one_by_id);
 #
 ###
 
-# sub to_hashes {
-#   my $modules = shift;
-#   my @output = map { $_->to_hash} @{$modules};
-#   return \@output;
-# }
+sub to_hashes {
+  my $modules = shift;
+  my @output = map { $_->to_hash} @{$modules};
+  return \@output;
+}
 
 ##
 #
@@ -28,6 +28,7 @@ our @EXPORT_OK = qw(to_hashes insert_to_db get_all_in_collection get_one_by_id);
 
 sub insert_to_db {
   my ($client,$collection_name,$obj) = @_;
+  dd "in insert_to_db";
   my $collection = $client->ns($collection_name);
   my $result = $collection->insert_one($obj);
   $obj->{_id} = $result->{inserted_id}->{value};

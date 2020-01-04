@@ -1,7 +1,8 @@
 package Model::ProblemList;  # functions related to collections of problems
+
 use base qw(Exporter);
 use Model::Problem;
-use MongoDB::OID;
+use BSON::OID;
 use DateTime;
 use Data::Dump qw/dd dump/;
 
@@ -31,13 +32,8 @@ sub get_problem_by_id {
 sub insert_new_problem {
   my ($client,$params) = @_;
   my $problem = new Model::Problem($params);
-#  if (defined $params->{text_md}) {
-#    $problem->text_md_date(DateTime->now);
-#  }
+  dd "in insert_new_problem";
   my $result = Common::Collection::insert_to_db($client,'problemdb.problems',$problem);
-
-  #print dump $result;
-
   return $result;
 }
 

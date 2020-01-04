@@ -9,12 +9,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import MenuBar from '@/components/MenuBar.vue';
 
-import axios from 'axios';
-
-import { getModule } from 'vuex-module-decorators';
-import WeBWorKStore from '@/store';
-const store = getModule(WeBWorKStore);
-
+import Problems from '@/store/modules/problem';
 
 @Component({
   name: 'ProblemBankApp',
@@ -23,14 +18,8 @@ const store = getModule(WeBWorKStore);
   },
 })
 export default class ProblemBankApp extends Vue {
-  public  created() {
-    // tslint:disable-next-line
-    console.log("Loading data");
-    axios.get('/api/problems/')
-      .then( (response) => {
-        // tslint:disable-next-line
-        console.log(response);
-    });
+  public async created() {
+    await Problems.getProblems();
   }
 }
 </script>
@@ -41,7 +30,6 @@ export default class ProblemBankApp extends Vue {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 </style>
